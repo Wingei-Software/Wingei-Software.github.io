@@ -47,20 +47,97 @@ window.addEventListener('DOMContentLoaded', event => {
  * 3D animations
  *************************************/
 
+const randomizeMatrix = function () {
+    const position = new THREE.Vector3();
+    const rotation = new THREE.Euler();
+    const quaternion = new THREE.Quaternion();
+    const scale = new THREE.Vector3();
+
+    return function ( matrix ) {
+        position.x = Math.random() * 40 - 20;
+        position.y = Math.random() * 40 - 20;
+        position.z = Math.random() * 40 - 20;
+        
+        rotation.x = Math.random() * 2 * Math.PI;
+        rotation.y = Math.random() * 2 * Math.PI;
+        rotation.z = Math.random() * 2 * Math.PI;
+        
+        quaternion.setFromEuler( rotation );
+        scale.x = scale.y = scale.z = Math.random() * 0.8;
+        matrix.compose( position, quaternion, scale );
+    };
+}();
+
+function addInstancedMesh(scene, geometry, materialOpts, count) {
+    const material = new THREE.MeshStandardMaterial(materialOpts);
+    const mesh = new THREE.InstancedMesh( geometry, material, count );
+    const matrix = new THREE.Matrix4();
+    for ( let i = 0; i < count; i ++ ) {
+        randomizeMatrix( matrix );
+        mesh.setMatrixAt( i, matrix );
+    }
+    scene.add(mesh);
+}
+
+const itemCount = 1000;
+
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
 
 const canvas = document.querySelector("canvas");
-const renderer = new THREE.WebGLRenderer({canvas: canvas});
+const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true});
 renderer.setClearColor(0x0367A6);
+renderer.setPixelRatio( window.devicePixelRatio );
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial({
-    color: 0x00ff00,
-    wireframe: true,
+let mouseX = 0, mouseY = 0;
+let windowHalfX = window.innerWidth / 2;
+let windowHalfY = window.innerHeight / 2;
+
+document.addEventListener( 'mousemove', onDocumentMouseMove );
+function onDocumentMouseMove( event ) {
+    mouseX = ( event.clientX - windowHalfX );
+    mouseY = ( event.clientY - windowHalfY );
+}
+
+// Ambiant light
+const light = new THREE.AmbientLight( 0x404040, 3 ); // soft white light
+scene.add( light );
+
+// White directional light at half intensity shining from the top.
+const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+scene.add( directionalLight );
+
+// Fog
+scene.fog = new THREE.FogExp2(0x0367A6, 0.05);
+
+// Take inspiration from https://stonewallforever.org/monument
+// TODO: https://threejs.org/examples/#webgl_postprocessing_unreal_bloom_selective (add bloom)
+
+const geometry = new THREE.TetrahedronGeometry(1);
+const material = new THREE.MeshStandardMaterial({
+    color: 0xa4af69,
 });
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+const mesh = new THREE.InstancedMesh( geometry, material, itemCount );
+const matrix = new THREE.Matrix4();
+for ( let i = 0; i < itemCount; i ++ ) {
+    randomizeMatrix( matrix );
+    mesh.setMatrixAt( i, matrix );
+}
+scene.add(mesh);
+
+const emissiveLightCount = 30;
+const emissiveMaterial = new THREE.MeshStandardMaterial({
+    emissive: 0xff9fe5,
+    color: 0xff9fe5,
+    emissiveIntensity: 2,
+});
+const emissiveMesh = new THREE.InstancedMesh(geometry, emissiveMaterial, emissiveLightCount);
+const emissiveMatrix = new THREE.Matrix4();
+for ( let i = 0; i < emissiveLightCount; i ++ ) {
+    randomizeMatrix( emissiveMatrix );
+    emissiveMesh.setMatrixAt( i, emissiveMatrix );
+}
+scene.add(emissiveMesh);
 
 camera.position.z = 1;
 
@@ -77,8 +154,12 @@ function resize() {
 function render(time) {
     time *= 0.001;
     resize();
-    cube.rotation.x = time;
-    cube.rotation.y = time * 0.31;
+    
+    // TODO: add boundaries to avoid loosing the scene
+    camera.position.x += ( mouseX - camera.position.x ) * .000005;
+    camera.position.y += ( - mouseY - camera.position.y ) * .000005;
+    camera.lookAt( scene.position );
+    
     renderer.render(scene, camera);
     requestAnimationFrame(render);
 }
