@@ -89,7 +89,7 @@ const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true});
 renderer.setClearColor(0x0367A6);
 renderer.setPixelRatio( window.devicePixelRatio );
 
-let mouseX = 0, mouseY = 0;
+let mouseX = 10, mouseY = 10;
 let windowHalfX = window.innerWidth / 2;
 let windowHalfY = window.innerHeight / 2;
 
@@ -100,11 +100,11 @@ function onDocumentMouseMove( event ) {
 }
 
 // Ambiant light
-const light = new THREE.AmbientLight( 0x404040, 3 ); // soft white light
+const light = new THREE.AmbientLight( 0x404040, 1 ); // soft white light
 scene.add( light );
 
 // White directional light at half intensity shining from the top.
-const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+const directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
 scene.add( directionalLight );
 
 // Fog
@@ -113,31 +113,41 @@ scene.fog = new THREE.FogExp2(0x0367A6, 0.05);
 // Take inspiration from https://stonewallforever.org/monument
 // TODO: https://threejs.org/examples/#webgl_postprocessing_unreal_bloom_selective (add bloom)
 
-const geometry = new THREE.TetrahedronGeometry(1);
-const material = new THREE.MeshStandardMaterial({
-    color: 0xa4af69,
-});
-const mesh = new THREE.InstancedMesh( geometry, material, itemCount );
-const matrix = new THREE.Matrix4();
-for ( let i = 0; i < itemCount; i ++ ) {
-    randomizeMatrix( matrix );
-    mesh.setMatrixAt( i, matrix );
-}
-scene.add(mesh);
+addInstancedMesh(
+    scene,
+    new THREE.TetrahedronGeometry(1),
+    {color: 0xa4af69},
+    itemCount
+);
 
-const emissiveLightCount = 30;
-const emissiveMaterial = new THREE.MeshStandardMaterial({
-    emissive: 0xff9fe5,
-    color: 0xff9fe5,
-    emissiveIntensity: 2,
-});
-const emissiveMesh = new THREE.InstancedMesh(geometry, emissiveMaterial, emissiveLightCount);
-const emissiveMatrix = new THREE.Matrix4();
-for ( let i = 0; i < emissiveLightCount; i ++ ) {
-    randomizeMatrix( emissiveMatrix );
-    emissiveMesh.setMatrixAt( i, emissiveMatrix );
-}
-scene.add(emissiveMesh);
+addInstancedMesh(
+    scene,
+    new THREE.TetrahedronGeometry(1),
+    {
+        emissive: 0xff9fe5,
+        color: 0xff9fe5,
+        emissiveIntensity: 2,
+    },
+    300
+)
+
+addInstancedMesh(
+    scene,
+    new THREE.OctahedronGeometry(1),
+    {
+        color: 0xef8354,
+    },
+    1000
+)
+
+addInstancedMesh(
+    scene,
+    new THREE.BoxGeometry(0.5),
+    {
+        color: 0x72ddf7,
+    },
+    2000
+)
 
 camera.position.z = 1;
 
