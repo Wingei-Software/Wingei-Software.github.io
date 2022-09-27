@@ -11437,6 +11437,7 @@ p {
     font-weight: 700;
     line-height: 4.5rem;
     margin-bottom: 4rem;
+    text-shadow: -1px -1px 0 var(--bs-blue), 1px -1px 0 var(--bs-blue), -1px 1px 0 var(--bs-blue), 1px 1px 0 var(--bs-blue);
   }
 }
 #portfolio .portfolio-item {
@@ -11772,4 +11773,8 @@ section#contact form#contactForm :-ms-input-placeholder {
   top: 0;
   z-index: -9999;
   background-color: var(--bs-blue);
+}
+
+.masthead-subheading img {
+  width: 400px;
 }
