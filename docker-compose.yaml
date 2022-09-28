@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+  app:
+    image: node:latest
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+    command: tail -F /var/log/syslog

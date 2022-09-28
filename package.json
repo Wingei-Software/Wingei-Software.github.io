@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "esbuild": "^0.15.9",
+    "three": "^0.144.0"
+  },
+  "scripts": {
+    "build": "esbuild three-animation.js --bundle --outfile=three-animation.min.js"
+  }
+}
