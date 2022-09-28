@@ -164,6 +164,8 @@ function resize() {
     }
 }
 
+var dt=1000/60;
+var timeTarget=0;
 function render(time) {
     time *= 0.001;
     resize();
