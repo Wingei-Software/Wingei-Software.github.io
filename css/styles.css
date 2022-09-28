@@ -11403,6 +11403,7 @@ p {
   background-attachment: scroll;
   background-position: center center;
   background-size: cover;
+  height: 100vh;
 }
 .masthead .masthead-subheading {
   font-size: 1.5rem;
