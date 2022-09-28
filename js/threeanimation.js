@@ -52,14 +52,17 @@ const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
 const canvas = document.querySelector("canvas");
 const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true});
 renderer.setClearColor(BG_BLUE);
+// renderer.setClearColor(0x000000);
 renderer.setPixelRatio( window.devicePixelRatio );
-// renderer.toneMapping = THREE.ReinhardToneMapping;
+//renderer.toneMapping = THREE.ReinhardToneMapping;
+
+renderer.toneMapping = THREE.NoToneMapping;
 
 const params = {
-    exposure: 1,
+    exposure: 1.5,
     bloomStrength: 0.4,
-    bloomThreshold: 0,
-    bloomRadius: 2
+    bloomThreshold: 0.6,
+    bloomRadius: 4
 };
 
 const renderScene = new RenderPass(scene, camera);
@@ -82,8 +85,10 @@ renderer.toneMappingExposure = Math.pow( params.exposure, 4.0 );
 
 const composer = new EffectComposer(renderer);
 composer.addPass(renderScene);
-
 composer.addPass(bloomPass);
+
+composer.toneMapping = THREE.ReinhardToneMapping;
+composer.toneMappingExposure = Math.pow( params.exposure, 4.0 );
 
 let mouseX = 10, mouseY = 10;
 let windowHalfX = window.innerWidth / 2;
@@ -141,7 +146,7 @@ addInstancedMesh(
     scene,
     new THREE.BoxGeometry(1),
     {
-        color: COLOR_ORANGE,
+        color: COLOR_PINK,
     },
     2000
 )
