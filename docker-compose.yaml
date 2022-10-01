@@ -6,4 +6,6 @@ services:
     volumes:
       - .:/var/www/html
     working_dir: /var/www/html
-    command: tail -F /var/log/syslog
+    # Use sleep to avoid docker closing stdin
+    #command: 'sleep 9999999999 |yarn run watch'
+    command: tail -F /var/log/syslog 

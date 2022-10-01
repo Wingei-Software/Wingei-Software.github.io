@@ -4,6 +4,8 @@
     "three": "^0.144.0"
   },
   "scripts": {
-    "build": "esbuild three-animation.js --bundle --outfile=three-animation.min.js"
+    "build": "esbuild three-animation.js --bundle --minify --outfile=three-animation.min.js",
+    "watch-minify": "esbuild --bundle --minify js/threeanimation.js --outfile=js/threeanimation.min.js --watch",
+    "watch": "esbuild --bundle js/threeanimation.js --outfile=js/threeanimation.min.js --watch"
   }
 }
