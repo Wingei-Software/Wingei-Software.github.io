@@ -22,16 +22,15 @@ function createMatrix(position, eulerRotation, scale)
 function registerCones(scene)
 {
     const baseConeHeight = 1.5;
-    
     const pyramidsMatrices = [
         // 3 little pyramids
-        createMatrix(new Vector3(0,baseConeHeight/2,0), new Euler(0,0,0), new Vector3(1,1,1)),
-        createMatrix(new Vector3(-1.337788,baseConeHeight/2,-3.20876), new Euler(0,0,0), new Vector3(1,1,1)),
-        createMatrix(new Vector3(1.03933,baseConeHeight/2,-3.66235), new Euler(degToRad(0),degToRad(0),degToRad(0)), new Vector3(1,1,1)),
+        createMatrix(new Vector3(0,baseConeHeight/2,0), new Euler(0, degToRad(25.6),0), new Vector3(1,1,1)),
+        createMatrix(new Vector3(-1.337788,baseConeHeight/2,-3.20876), new Euler(0,degToRad(102),0), new Vector3(1,1,1)),
+        createMatrix(new Vector3(1.03933,baseConeHeight/2,-3.66235), new Euler(0, degToRad(61.2),0), new Vector3(1,1,1)),
         // medium pyramid
-        createMatrix(new Vector3(3.82015, baseConeHeight*2/2,-4.69025), new Euler(degToRad(0),degToRad(0), degToRad(0)), new Vector3(2,2,2)),
+        createMatrix(new Vector3(3.82015, baseConeHeight*2/2,-4.69025), new Euler(0, degToRad(90.8), 0), new Vector3(2,2,2)),
         // Big pyramid
-        createMatrix(new Vector3(4.328272, baseConeHeight*4/2,1.023127), new Euler(degToRad(0),degToRad(0), degToRad(0)), new Vector3(4,4,4)),
+        createMatrix(new Vector3(4.328272, baseConeHeight*4/2,1.023127), new Euler(0, degToRad(-38), 0), new Vector3(4,4,4)),
     ];
     const materialOpts = {};
     const geometry = new ConeGeometry(1,baseConeHeight,3);
@@ -50,10 +49,10 @@ function registerCones(scene)
 function registerOctahedrons(scene)
 {
     const matrices = [
-        createMatrix(new Vector3(1.952827,7.109964,5.357402), new Euler(0,0,0), new Vector3(1,1,1)),
-        createMatrix(new Vector3(8.80595684,9.38697815,2.63875365), new Euler(0,0,0), new Vector3(1,1,1)),
-        createMatrix(new Vector3(6.41082335,6.69409895,-4.85258627), new Euler(degToRad(0),degToRad(0),degToRad(0)), new Vector3(1,1,1)),
-        createMatrix(new Vector3(-1.38922143,4.86102295,-4.1731348), new Euler(degToRad(0),degToRad(0), degToRad(0)), new Vector3(1,1,1)),
+        createMatrix(new Vector3(1.952827,4,5.357402), new Euler(0,0,0), new Vector3(1,1,1)),
+        createMatrix(new Vector3(8.80595684,5,2.63875365), new Euler(0,0,0), new Vector3(1,1,1)),
+        createMatrix(new Vector3(6.41082335,4,-4.85258627), new Euler(degToRad(0),degToRad(0),degToRad(0)), new Vector3(1,1,1)),
+        createMatrix(new Vector3(-1.38922143,3,-4.1731348), new Euler(degToRad(0),degToRad(0), degToRad(0)), new Vector3(1,1,1)),
     ];
     const materialOpts = {
         emissive: COLOR_PINK,
@@ -75,10 +74,11 @@ function registerCubes(scene)
     const cubeHeight = 1;
     
     const matrices = [
-        createMatrix(new Vector3(7.5297575,cubeHeight/2,4.75794506), new Euler(0,0,0), new Vector3(1,1,1)),
-        createMatrix(new Vector3(7.68720627,cubeHeight/2,7.25141478), new Euler(0,0,0), new Vector3(1,1,1)),
-        createMatrix(new Vector3(5.22734976,cubeHeight/2,6.13682795), new Euler(degToRad(0),degToRad(0),degToRad(0)), new Vector3(1,1,1)),
-        createMatrix(new Vector3(6.90357113,cubeHeight+cubeHeight/2,5.7390604), new Euler(degToRad(0),degToRad(0), degToRad(0)), new Vector3(1,1,1)),
+        //createMatrix(new Vector3(7.5297575,cubeHeight/2,5.75794506), new Euler(0,degToRad(-15.7),0), new Vector3(1,1,1)),
+        createMatrix(new Vector3(7,cubeHeight/2,5), new Euler(0,degToRad(-15.7),0), new Vector3(1,1,1)),
+        createMatrix(new Vector3(7.68720627,cubeHeight/2,6.25141478), new Euler(0,degToRad(21.2),0), new Vector3(1,1,1)),
+        createMatrix(new Vector3(6.22734976,cubeHeight/2,6.13682795), new Euler(0,0,0), new Vector3(1,1,1)),
+        createMatrix(new Vector3(6.90357113,cubeHeight+cubeHeight/2,5.7390604), new Euler(0,0,0), new Vector3(1,1,1)),
     ];
     const materialOpts = {};
     const geometry = new BoxGeometry(1, 1);
@@ -115,14 +115,19 @@ renderer.setPixelRatio( window.devicePixelRatio );
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-// renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMapping = THREE.CineonToneMapping;
 // renderer.toneMappingExposure = THREE.ReinhardToneMapping;
 
 // Ambiant light
 const light = new THREE.AmbientLight( baseColor, 0.1 ); // soft white light
 scene.add(light);
 
-scene.add(new  THREE.DirectionalLight(baseColor, 0.5));
+const sunLight = new  THREE.DirectionalLight(0xffffff, 0.9);
+sunLight.position.set(-5,2.5,-3);
+sunLight.castShadow = true;
+sunLight.shadow.mapSize.width = 512;
+sunLight.shadow.mapSize.height = 512;
+scene.add(sunLight);
 
 const sphere = new THREE.SphereGeometry( 0.01, 16, 8 );
 
@@ -154,13 +159,11 @@ scene.add(light2);
 
 // Instanciate floor
 const planeGeometry = new THREE.PlaneGeometry( 1000   , 1000, 10, 10);
-const material = new THREE.MeshStandardMaterial( {} );
+const material = new THREE.MeshStandardMaterial( {color:0xffffff} );
 const plane = new THREE.Mesh( planeGeometry, material );
-plane.position.setY(0.1);
-plane.receiveShadow = true;
-
-
+plane.position.setY(0.01);
 plane.rotation.x = degToRad(-90);
+plane.receiveShadow = true;
 
 scene.add(plane);
 
@@ -174,23 +177,14 @@ function onDocumentMouseMove( event ) {
     mouseY = ( event.clientY - windowHalfY );
 }
 
-// White directional light at half intensity shining from the top.
-// const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.7);
-// directionalLight.rotateX(3.14/4);
-// scene.add( directionalLight );
-
-
-
-
 // Fog
 //scene.fog = new THREE.FogExp2(BG_BLUE, 0.05);
-scene.fog = new THREE.Fog(BG_BLUE, 100, 1000);
+scene.fog = new THREE.Fog(BG_BLUE, 10, 50);
 
 // Compose the scene
 registerOctahedrons(scene);
 registerCubes(scene);
 registerCones(scene);
-
 
 function resize() {
     const width = canvas.clientWidth;
@@ -204,7 +198,8 @@ function resize() {
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.autoRotate = true;
-controls.autoRotateSpeed = 0.25;
+// controls.autoRotateSpeed = 0.25;
+controls.autoRotateSpeed = -2;
 
 var dt=1000/60;
 var timeTarget=0;
@@ -223,6 +218,7 @@ function render(time) {
     
     renderer.clear();
     renderer.render(scene, camera);
+    // console.log(renderer.info.render.calls);
     requestAnimationFrame(render);
 }
 
