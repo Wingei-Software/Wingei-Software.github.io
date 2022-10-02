@@ -8,6 +8,24 @@ const COLOR_PINK = 0xff9fe5;
 const COLOR_ORANGE = 0xef8354;
 const COLOR_GREEN = 0xa4af69;
 
+window.countFPS = (function () {
+    var lastLoop = (new Date()).getMilliseconds();
+    var count = 1;
+    var fps = 0;
+
+    return function () {
+        var currentLoop = (new Date()).getMilliseconds();
+        if (lastLoop > currentLoop) {
+            fps = count;
+            count = 1;
+        } else {
+            count += 1;
+        }
+        lastLoop = currentLoop;
+        return 'FPS: ' + fps;
+    };
+}());
+
 function createMatrix(position, eulerRotation, scale)
 {
     const quat = new Quaternion();
@@ -64,6 +82,8 @@ function registerOctahedrons(scene)
     for ( let i = 0; i < matrices.length; i ++ ) {
         mesh.setMatrixAt( i, matrices[i] );
     }
+    
+    mesh.castShadow = true;
 
     scene.add(mesh);
 }
@@ -103,7 +123,8 @@ const quat = new Quaternion();
 quat.setFromEuler(new Euler(degToRad(-0.559), degToRad(22.588), degToRad(0)));
 camera.rotation.setFromQuaternion(quat);
 camera.updateProjectionMatrix();
-camera.lookAt(0,0,0);
+// camera.lookAt(0,0,0);
+camera.lookAt(4.328272, 1,1.023127)
 
 const baseColor = 0x999999;
 
@@ -115,7 +136,7 @@ renderer.setPixelRatio( window.devicePixelRatio );
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-renderer.toneMapping = THREE.CineonToneMapping;
+// renderer.toneMapping = THREE.CineonToneMapping;
 // renderer.toneMappingExposure = THREE.ReinhardToneMapping;
 
 // Ambiant light
@@ -123,10 +144,13 @@ const light = new THREE.AmbientLight( baseColor, 0.1 ); // soft white light
 scene.add(light);
 
 const sunLight = new  THREE.DirectionalLight(0xffffff, 0.9);
-sunLight.position.set(-5,2.5,-3);
-sunLight.castShadow = true;
+sunLight.position.set(-100,200.5,60);
+sunLight.castShadow = false;
 sunLight.shadow.mapSize.width = 512;
 sunLight.shadow.mapSize.height = 512;
+sunLight.shadow.camera.near = 0.1; // default
+sunLight.shadow.camera.far = 5000; // default
+sunLight.shadow.bias = -0.000005;
 scene.add(sunLight);
 
 const sphere = new THREE.SphereGeometry( 0.01, 16, 8 );
@@ -135,31 +159,31 @@ const sphere = new THREE.SphereGeometry( 0.01, 16, 8 );
 const light1 = new THREE.PointLight( BG_BLUE, 1, 50 );
 light1.position.set(1.17681909,0.461263299,-2.00186467);
 //Set up shadow properties for the light
-light1.castShadow = true;
+light1.castShadow = false;
 light1.shadow.mapSize.width = 512; // default
 light1.shadow.mapSize.height = 512; // default
 light1.shadow.camera.near = 0.1; // default
 light1.shadow.camera.far = 500; // default
 light1.shadow.bias = -0.0005;
 light1.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: BG_BLUE } ) ) );
-scene.add( light1 )
+// scene.add( light1 )
 
 // Red light
 const light2 = new THREE.PointLight( 0xff0000, 1, 50 );
 light2.position.set(6.6597147,0.461263299,6.01144266);
 //Set up shadow properties for the light
-light2.castShadow = true;
+light2.castShadow = false;
 light2.shadow.mapSize.width = 1024; // default
 light2.shadow.mapSize.height = 1024; // default
 light2.shadow.camera.near = 0.1; // default
 light2.shadow.camera.far = 500; // default
 light2.shadow.bias = -0.0005;
 light2.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: COLOR_ORANGE } ) ) );
-scene.add(light2);
+// scene.add(light2);
 
 // Instanciate floor
 const planeGeometry = new THREE.PlaneGeometry( 1000   , 1000, 10, 10);
-const material = new THREE.MeshStandardMaterial( {color:0xffffff} );
+const material = new THREE.MeshStandardMaterial( {} );
 const plane = new THREE.Mesh( planeGeometry, material );
 plane.position.setY(0.01);
 plane.rotation.x = degToRad(-90);
@@ -213,6 +237,8 @@ function render(time) {
     // camera.lookAt( scene.position );
     // camera.lookAt( plane.position );
     // camera.lookAt(0,0,0);
+    
+    console.log(countFPS());
     
     controls.update();
     
