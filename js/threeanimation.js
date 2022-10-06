@@ -1,21 +1,31 @@
-﻿import * as THREE from '../node_modules/three/build/three.module.js';
+﻿// import * as THREE from 'three/build/three.module.js';
 import {
     BoxGeometry,
     ConeGeometry,
-    CylinderGeometry,
-    Euler,
-    Matrix4,
-    OctahedronGeometry, PerspectiveCamera,
+    CylinderGeometry, EquirectangularReflectionMapping,
+    Euler, InstancedMesh,
+    Matrix4, MeshStandardMaterial,
+    OctahedronGeometry, PerspectiveCamera, PMREMGenerator,
     Quaternion, SphereGeometry,
-    Vector3
+    Vector3, Color, TextureLoader, Scene, WebGLRenderer, AmbientLight, DirectionalLight, Fog
 } from "three";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls.js";
 import {degToRad} from "three/src/math/MathUtils.js";
+import {Texture} from "three";
 
 const BG_BLUE = 0x0367a6;
 const COLOR_PINK = 0xff9fe5;
 const COLOR_ORANGE = 0xef8354;
 const COLOR_GREEN = 0xa4af69;
+
+var envMap = new Texture();
+new TextureLoader().load('assets/models/envMap.png', (texture) => {
+    texture.mapping =  EquirectangularReflectionMapping;
+    //texture.mapping = THREE.CubeReflectionMapping;
+    envMap = texture;
+});
+
+// envMap.mapping = THREE.SphericalReflectionMapping;
 
 window.countFPS = (function () {
     var lastLoop = (new Date()).getMilliseconds();
@@ -57,9 +67,9 @@ function registerOctahedrons(scene)
     ];
     
     const colors = [
-        new THREE.Color(255,0,0),
-        new THREE.Color(0,255,0),
-        new THREE.Color(0,0,255),
+        new Color(255,0,0),
+        new Color(0,255,0),
+        new Color(0,0,255),
     ];
     
     const materialOpts = {
@@ -67,14 +77,14 @@ function registerOctahedrons(scene)
     };
     
     const geometry = new OctahedronGeometry(1, 0);
-    const material = new THREE.MeshStandardMaterial(materialOpts);
-    const mesh = new THREE.InstancedMesh( geometry, material, matrices.length );
+    const material = new MeshStandardMaterial(materialOpts);
+    const mesh = new InstancedMesh( geometry, material, matrices.length );
     for ( let i = 0; i < matrices.length; i ++ ) {
         mesh.setMatrixAt( i, matrices[i] );
         //mesh.setColorAt(i, colors[i]);
     }
     // mesh.instanceColor.needsUpdate = true;
-    mesh.castShadow = true;
+    mesh.castShadow = false;
 
     scene.add(mesh);
 }
@@ -97,8 +107,8 @@ function createTubeAndWires(scene)
         color: COLOR_ORANGE,
     };
     const geometry = new CylinderGeometry(1, 1);
-    const material = new THREE.MeshStandardMaterial(materialOpts);
-    const mesh = new THREE.InstancedMesh( geometry, material, matrices.length );
+    const material = new MeshStandardMaterial(materialOpts);
+    const mesh = new InstancedMesh( geometry, material, matrices.length );
     for ( let i = 0; i < matrices.length; i ++ ) {
         mesh.setMatrixAt( i, matrices[i] );
     }
@@ -107,6 +117,8 @@ function createTubeAndWires(scene)
 
     scene.add(mesh);
 }
+
+var pearls;
 
 function createPearls(scene)
 {
@@ -117,26 +129,35 @@ function createPearls(scene)
         createMatrix(new Vector3(0,4.5 + 0.15,0), new Euler(0,0,0), new Vector3(0.1 ,0.1,0.1)),
         // right wire
         createMatrix(new Vector3(1,4.5 + 0.1,0), new Euler(0,0,0), new Vector3(0.05 ,0.05,0.05)),
+        
+        // Big debug pearl
+        // createMatrix(new Vector3(1,4.5 + 0.1,0), new Euler(0,0,0), new Vector3(1 ,1,1)),
     ];
     const materialOpts = {
-        // color: 0xffffff,
+        color: 0xffffff,
         metalness: 1,
-        roughness: 0,
+        roughness: 0.0,
+        envMapIntensity: 1.0,
+        envMap: envMap,
         // flatShading: true,
     };
-    const geometry = new SphereGeometry(1, 10);
-    const material = new THREE.MeshStandardMaterial(materialOpts);
-    const mesh = new THREE.InstancedMesh( geometry, material, matrices.length );
+    const geometry = new SphereGeometry(1, 20);
+    const material = new MeshStandardMaterial(materialOpts);
+    material.envMap = envMap;
+    material.needsUpdate = true;
+    pearls = new InstancedMesh( geometry, material, matrices.length );
     for ( let i = 0; i < matrices.length; i ++ ) {
-        mesh.setMatrixAt( i, matrices[i] );
+        pearls.setMatrixAt( i, matrices[i] );
     }
     
-    scene.add(mesh);
+    scene.add(pearls);
 }
 
-const scene = new THREE.Scene();
+const scene = new Scene();
+scene.environment = envMap;
+scene.background = envMap;
 const camera = new PerspectiveCamera();
-camera.position.set(1, 2, 4);
+camera.position.set(1, 5, 4);
 camera.updateProjectionMatrix();
 camera.lookAt(0, 4,0);
 
@@ -145,7 +166,7 @@ camera.lookAt(0, 4,0);
 const baseColor = 0x999999;
 
 const canvas = document.querySelector("canvas");
-const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true});
+const renderer = new WebGLRenderer({canvas: canvas, antialias: true});
 renderer.setClearColor(BG_BLUE);
 renderer.setPixelRatio( window.devicePixelRatio );
 // renderer.toneMapping = THREE.NoToneMapping;
@@ -155,11 +176,14 @@ renderer.shadowMap.enabled = false;
 // renderer.toneMapping = THREE.ReinhardToneMapping;
 // renderer.toneMappingExposure = THREE.ReinhardToneMapping;
 
+renderer.gammaInput = true;
+renderer.gammaOutput = true;
+
 // Ambiant light
-const light = new THREE.AmbientLight( baseColor, 0.4 ); // soft white light
+const light = new AmbientLight( baseColor, 0.4 ); // soft white light
 scene.add(light);
 
-const sunLight = new  THREE.DirectionalLight(0xffffff, 1);
+const sunLight = new DirectionalLight(0xffffff, 1);
 sunLight.position.set(-100,200.5,60);
 scene.add(sunLight);
 
@@ -174,8 +198,7 @@ function onDocumentMouseMove( event ) {
 }
 
 // Fog
-//scene.fog = new THREE.FogExp2(BG_BLUE, 0.05);
-scene.fog = new THREE.Fog(BG_BLUE, 10, 50);
+scene.fog = new Fog(BG_BLUE, 10, 50);
 
 // Compose the scene
 registerOctahedrons(scene);
@@ -197,12 +220,21 @@ function resize() {
 // controls.autoRotateSpeed = 0.25;
 //controls.autoRotateSpeed = -2;
 
+// const controls = new OrbitControls( camera, renderer.domElement );
+// controls.update();
+
+var pmrengenerator = new PMREMGenerator(renderer);
+pmrengenerator.compileEquirectangularShader();
+
 var dt=1000/60;
 var timeTarget=0;
 function render(time) {
+    // Fixme: call this only one after load
+    pearls.material.envMap = envMap;
+    pearls.material.needsUpdate = true;
     time *= 0.001;
     resize();
-    //controls.update();
+    // controls.update();
     renderer.clear();
     renderer.render(scene, camera);
     // console.log(renderer.info.render.calls);
