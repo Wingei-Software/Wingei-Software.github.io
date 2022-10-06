@@ -1,17 +1,13 @@
-﻿// import * as THREE from 'three/build/three.module.js';
-import {
-    BoxGeometry,
-    ConeGeometry,
+﻿import {
     CylinderGeometry, EquirectangularReflectionMapping,
     Euler, InstancedMesh,
     Matrix4, MeshStandardMaterial,
     OctahedronGeometry, PerspectiveCamera, PMREMGenerator,
-    Quaternion, SphereGeometry,
+    Quaternion, SphereGeometry, Texture,
     Vector3, Color, TextureLoader, Scene, WebGLRenderer, AmbientLight, DirectionalLight, Fog
 } from "three";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls.js";
 import {degToRad} from "three/src/math/MathUtils.js";
-import {Texture} from "three";
 
 const BG_BLUE = 0x0367a6;
 const COLOR_PINK = 0xff9fe5;
@@ -21,11 +17,8 @@ const COLOR_GREEN = 0xa4af69;
 var envMap = new Texture();
 new TextureLoader().load('assets/models/envMap.png', (texture) => {
     texture.mapping =  EquirectangularReflectionMapping;
-    //texture.mapping = THREE.CubeReflectionMapping;
     envMap = texture;
 });
-
-// envMap.mapping = THREE.SphericalReflectionMapping;
 
 window.countFPS = (function () {
     var lastLoop = (new Date()).getMilliseconds();
@@ -81,9 +74,7 @@ function registerOctahedrons(scene)
     const mesh = new InstancedMesh( geometry, material, matrices.length );
     for ( let i = 0; i < matrices.length; i ++ ) {
         mesh.setMatrixAt( i, matrices[i] );
-        //mesh.setColorAt(i, colors[i]);
     }
-    // mesh.instanceColor.needsUpdate = true;
     mesh.castShadow = false;
 
     scene.add(mesh);
@@ -129,9 +120,6 @@ function createPearls(scene)
         createMatrix(new Vector3(0,4.5 + 0.15,0), new Euler(0,0,0), new Vector3(0.1 ,0.1,0.1)),
         // right wire
         createMatrix(new Vector3(1,4.5 + 0.1,0), new Euler(0,0,0), new Vector3(0.05 ,0.05,0.05)),
-        
-        // Big debug pearl
-        // createMatrix(new Vector3(1,4.5 + 0.1,0), new Euler(0,0,0), new Vector3(1 ,1,1)),
     ];
     const materialOpts = {
         color: 0xffffff,
@@ -139,7 +127,6 @@ function createPearls(scene)
         roughness: 0.0,
         envMapIntensity: 1.0,
         envMap: envMap,
-        // flatShading: true,
     };
     const geometry = new SphereGeometry(1, 20);
     const material = new MeshStandardMaterial(materialOpts);
@@ -169,15 +156,7 @@ const canvas = document.querySelector("canvas");
 const renderer = new WebGLRenderer({canvas: canvas, antialias: true});
 renderer.setClearColor(BG_BLUE);
 renderer.setPixelRatio( window.devicePixelRatio );
-// renderer.toneMapping = THREE.NoToneMapping;
 renderer.shadowMap.enabled = false;
-// renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-// renderer.toneMapping = THREE.ReinhardToneMapping;
-// renderer.toneMappingExposure = THREE.ReinhardToneMapping;
-
-renderer.gammaInput = true;
-renderer.gammaOutput = true;
 
 // Ambiant light
 const light = new AmbientLight( baseColor, 0.4 ); // soft white light
@@ -237,7 +216,6 @@ function render(time) {
     // controls.update();
     renderer.clear();
     renderer.render(scene, camera);
-    // console.log(renderer.info.render.calls);
     requestAnimationFrame(render);
 }
 
