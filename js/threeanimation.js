@@ -1,13 +1,25 @@
 ﻿import {
-    CylinderGeometry, EquirectangularReflectionMapping,
-    Euler, InstancedMesh,
-    Matrix4, MeshStandardMaterial,
-    OctahedronGeometry, PerspectiveCamera, PMREMGenerator,
-    Quaternion, SphereGeometry, Texture,
-    Vector3, Color, TextureLoader, Scene, WebGLRenderer, AmbientLight, DirectionalLight, Fog
+    AmbientLight,
+    CylinderGeometry,
+    DirectionalLight,
+    EquirectangularReflectionMapping,
+    Euler,
+    Fog,
+    InstancedMesh,
+    Matrix4,
+    MeshStandardMaterial,
+    OctahedronGeometry,
+    PerspectiveCamera,
+    Quaternion,
+    Scene,
+    SphereGeometry,
+    Texture,
+    TextureLoader,
+    Vector3,
+    WebGLRenderer
 } from "three";
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls.js";
 import {degToRad} from "three/src/math/MathUtils.js";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls.js";
 
 const BG_BLUE = 0x0367a6;
 const COLOR_PINK = 0xff9fe5;
@@ -59,12 +71,6 @@ function registerOctahedrons(scene)
         createMatrix(new Vector3(1,2.5,0), new Euler(0,0,0), new Vector3(0.3,0.3,0.3)),
     ];
     
-    const colors = [
-        new Color(255,0,0),
-        new Color(0,255,0),
-        new Color(0,0,255),
-    ];
-    
     const materialOpts = {
         color: COLOR_PINK,
     };
@@ -76,8 +82,8 @@ function registerOctahedrons(scene)
         mesh.setMatrixAt( i, matrices[i] );
     }
     mesh.castShadow = false;
-
     scene.add(mesh);
+    return mesh;
 }
 
 function createTubeAndWires(scene)
@@ -103,13 +109,9 @@ function createTubeAndWires(scene)
     for ( let i = 0; i < matrices.length; i ++ ) {
         mesh.setMatrixAt( i, matrices[i] );
     }
-
-    mesh.castShadow = true;
-
     scene.add(mesh);
+    return mesh;
 }
-
-var pearls;
 
 function createPearls(scene)
 {
@@ -132,31 +134,38 @@ function createPearls(scene)
     const material = new MeshStandardMaterial(materialOpts);
     material.envMap = envMap;
     material.needsUpdate = true;
-    pearls = new InstancedMesh( geometry, material, matrices.length );
+    const pearls = new InstancedMesh( geometry, material, matrices.length );
     for ( let i = 0; i < matrices.length; i ++ ) {
         pearls.setMatrixAt( i, matrices[i] );
     }
-    
     scene.add(pearls);
+    return pearls;
 }
 
 const scene = new Scene();
 scene.environment = envMap;
-scene.background = envMap;
-const camera = new PerspectiveCamera();
-camera.position.set(1, 5, 4);
-camera.updateProjectionMatrix();
-camera.lookAt(0, 4,0);
-
-// TODO: move camera from y 2 to y 5 and X -2.5 to 2.5
+// scene.background = envMap;
 
 const baseColor = 0x999999;
-
 const canvas = document.querySelector("canvas");
 const renderer = new WebGLRenderer({canvas: canvas, antialias: true});
 renderer.setClearColor(BG_BLUE);
 renderer.setPixelRatio( window.devicePixelRatio );
 renderer.shadowMap.enabled = false;
+
+const camera = new PerspectiveCamera();
+camera.position.set(1, 5, 4);
+camera.updateProjectionMatrix();
+camera.lookAt(0, 4,0);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0,4,0);
+controls.update();
+// controls.target = pearls;
+controls.autoRotate = false;
+controls.enableDamping = true;
+
+// TODO: move camera from y 2 to y 5 and X -2.5 to 2.5
 
 // Ambiant light
 const light = new AmbientLight( baseColor, 0.4 ); // soft white light
@@ -182,7 +191,7 @@ scene.fog = new Fog(BG_BLUE, 10, 50);
 // Compose the scene
 registerOctahedrons(scene);
 createTubeAndWires(scene);
-createPearls(scene);
+const pearls = createPearls(scene);
 
 function resize() {
     const width = canvas.clientWidth;
@@ -194,16 +203,7 @@ function resize() {
     }
 }
 
-//const controls = new OrbitControls(camera, renderer.domElement);
-//controls.autoRotate = true;
-// controls.autoRotateSpeed = 0.25;
-//controls.autoRotateSpeed = -2;
 
-// const controls = new OrbitControls( camera, renderer.domElement );
-// controls.update();
-
-var pmrengenerator = new PMREMGenerator(renderer);
-pmrengenerator.compileEquirectangularShader();
 
 var dt=1000/60;
 var timeTarget=0;
@@ -213,7 +213,7 @@ function render(time) {
     pearls.material.needsUpdate = true;
     time *= 0.001;
     resize();
-    // controls.update();
+    controls.update();
     renderer.clear();
     renderer.render(scene, camera);
     requestAnimationFrame(render);
