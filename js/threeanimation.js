@@ -322,15 +322,20 @@ function resize() {
     }
 }
 
-var dt=1000/60;
-var timeTarget=0;
+// target is 30FPS
+const fps_target = 30;
+const frame_duration = 1000/fps_target;
+let last_frame_time = 0;
+let next_frame_time = 0;
 
-function render(time) {
-    // time *= 0.001;
-    resize();
-    controls.update();
-    // renderer.clear();
-    renderer.render(scene, camera);
+function render() {
+    if (performance.now() > next_frame_time) {
+        resize();
+        controls.update();
+        renderer.render(scene, camera);
+        last_frame_time = performance.now();
+        next_frame_time = last_frame_time + frame_duration;
+    }
     requestAnimationFrame(render);
 }
 
