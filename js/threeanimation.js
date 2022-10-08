@@ -180,24 +180,6 @@ exrLoader.load('assets/textures/brown_photostudio_02_1k.exr', texture => {
     bluePaperMaterial.envMap = txt.texture;
 });
 
-window.countFPS = (function () {
-    var lastLoop = (new Date()).getMilliseconds();
-    var count = 1;
-    var fps = 0;
-
-    return function () {
-        var currentLoop = (new Date()).getMilliseconds();
-        if (lastLoop > currentLoop) {
-            fps = count;
-            count = 1;
-        } else {
-            count += 1;
-        }
-        lastLoop = currentLoop;
-        return 'FPS: ' + fps;
-    };
-}());
-
 function createMatrix(position, eulerRotation, scale)
 {
     const quat = new Quaternion();
@@ -288,7 +270,6 @@ camera.lookAt(0, 4,0);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0,4,0);
 controls.update();
-// controls.target = pearls;
 controls.autoRotate = true;
 controls.enableDamping = true;
 
@@ -303,9 +284,6 @@ function onDocumentMouseMove( event ) {
     mouseX = ( event.clientX - windowHalfX );
     mouseY = ( event.clientY - windowHalfY );
 }
-
-// Fog
-scene.fog = new Fog(BG_BLUE, 10, 50);
 
 // Compose the scene
 registerOctahedrons(scene);
@@ -338,7 +316,5 @@ function render() {
     }
     requestAnimationFrame(render);
 }
-
-// setInterval(() => {console.log(countFPS())}, 1000);
 
 render();
