@@ -2,21 +2,22 @@
 
 import {
     ACESFilmicToneMapping,
-    AmbientLight, Color,
+    Color,
     CylinderGeometry,
-    DirectionalLight,
-    EquirectangularReflectionMapping,
     Euler,
     Fog,
     InstancedMesh,
-    Matrix4, Mesh,
+    Matrix4,
+    Mesh,
     MeshStandardMaterial,
     OctahedronGeometry,
-    PerspectiveCamera, PMREMGenerator,
-    Quaternion, RepeatWrapping,
+    PerspectiveCamera,
+    PMREMGenerator,
+    Quaternion,
+    RepeatWrapping,
     Scene,
     SphereGeometry,
-    TextureLoader, Vector2,
+    TextureLoader,
     Vector3,
     WebGLRenderer
 } from "three";
@@ -57,12 +58,6 @@ renderer.toneMappingExposure = 1;
 let textureLoader = new TextureLoader();
 let exrLoader = new EXRLoader();
 let pmremGenerator = new PMREMGenerator(renderer);
-
-// textureLoader.load('assets/models/envMap.png', (texture) => {
-//     texture.mapping =  EquirectangularReflectionMapping;
-//     pearlsMaterial.envMap = texture;
-//     pearlsMaterial.needsUpdate;
-// });
 
 textureLoader.load('assets/textures/paper-normal.jpg', texture => {
    texture.repeat.set(2,2);
@@ -110,8 +105,58 @@ textureLoader.load('assets/textures/wood_normal.png', texture => {
     texture.rotation = Math.PI/2;
     texture.needsUpdate = true;
     woodMaterial.normalMap = texture;
-    //woodMaterial.color = 0xffffff;
     woodMaterial.needsUpdate = true;
+});
+
+textureLoader.load('assets/textures/wood_roughness.png', texture => {
+    texture.wrapS = RepeatWrapping;
+    texture.wrapT = RepeatWrapping;
+    texture.repeat.set(10,1);
+    texture.rotation = Math.PI/2;
+    texture.needsUpdate = true;
+    woodMaterial.roughnessMap = texture;
+    woodMaterial.needsUpdate = true;
+});
+
+textureLoader.load('assets/textures/wood_ao.png', texture => {
+    texture.wrapS = RepeatWrapping;
+    texture.wrapT = RepeatWrapping;
+    texture.repeat.set(10,1);
+    texture.rotation = Math.PI/2;
+    texture.needsUpdate = true;
+    woodMaterial.aoMap = texture;
+    woodMaterial.needsUpdate = true;
+});
+
+textureLoader.load('assets/textures/bronze_albedo.png', texture => {
+    texture.wrapS = RepeatWrapping;
+    texture.wrapT = RepeatWrapping;
+    texture.repeat.set(10,1);
+    texture.rotation = Math.PI/2;
+    texture.needsUpdate = true;
+    pearlsMaterial.map = texture;
+    pearlsMaterial.color = new Color(0xffffff);
+    pearlsMaterial.needsUpdate = true;
+});
+
+textureLoader.load('assets/textures/bronze_roughness.png', texture => {
+    texture.wrapS = RepeatWrapping;
+    texture.wrapT = RepeatWrapping;
+    texture.repeat.set(10,1);
+    texture.rotation = Math.PI/2;
+    texture.needsUpdate = true;
+    pearlsMaterial.roughnessMap = texture;
+    pearlsMaterial.needsUpdate = true;
+});
+
+textureLoader.load('assets/textures/bronze_metallic.png', texture => {
+    texture.wrapS = RepeatWrapping;
+    texture.wrapT = RepeatWrapping;
+    texture.repeat.set(10,1);
+    texture.rotation = Math.PI/2;
+    texture.needsUpdate = true;
+    pearlsMaterial.metalnessMap = texture;
+    pearlsMaterial.needsUpdate = true;
 });
 
 // from https://polyhaven.com/a/brown_photostudio_05
@@ -190,7 +235,7 @@ function createTubeAndWires(scene)
         // right wire
         createMatrix(new Vector3(1,5-2/2-0.5,0), new Euler(0,0,0), new Vector3(0.01,2,0.01)),
     ];
-    const geometry = new CylinderGeometry(1, 1);
+    const geometry = new CylinderGeometry(1, 1, 1, 16);
     const mesh = new InstancedMesh( geometry, ropeMaterial, RopeMatrices.length );
     for ( let i = 0; i < RopeMatrices.length; i ++ ) {
         mesh.setMatrixAt( i, RopeMatrices[i] );
