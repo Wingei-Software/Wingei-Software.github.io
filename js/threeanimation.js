@@ -1,35 +1,102 @@
 ﻿import {
-    AmbientLight,
+    AmbientLight, Color,
     CylinderGeometry,
     DirectionalLight,
     EquirectangularReflectionMapping,
     Euler,
     Fog,
     InstancedMesh,
-    Matrix4,
+    Matrix4, Mesh,
     MeshStandardMaterial,
     OctahedronGeometry,
     PerspectiveCamera,
-    Quaternion,
+    Quaternion, RepeatWrapping,
     Scene,
     SphereGeometry,
-    Texture,
-    TextureLoader,
+    TextureLoader, Vector2,
     Vector3,
     WebGLRenderer
 } from "three";
 import {degToRad} from "three/src/math/MathUtils.js";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls.js";
+import {color} from "three/addons/nodes/shadernode/ShaderNodeBaseElements";
 
 const BG_BLUE = 0x0367a6;
 const COLOR_PINK = 0xff9fe5;
 const COLOR_ORANGE = 0xef8354;
 const COLOR_GREEN = 0xa4af69;
 
-var envMap = new Texture();
-new TextureLoader().load('assets/models/envMap.png', (texture) => {
+const paperMaterial = new MeshStandardMaterial({
+    color: COLOR_PINK,
+});
+
+const pearlsMaterial = new MeshStandardMaterial({
+    color: 0xffffff,
+    metalness: 1,
+    roughness: 0.0,
+    envMapIntensity: 1.0,
+});
+
+const woodMaterial = new MeshStandardMaterial({color: COLOR_ORANGE});
+
+const ropeMaterial = new MeshStandardMaterial({color: COLOR_ORANGE});
+
+let textureLoader = new TextureLoader();
+
+textureLoader.load('assets/models/envMap.png', (texture) => {
     texture.mapping =  EquirectangularReflectionMapping;
-    envMap = texture;
+    pearlsMaterial.envMap = texture;
+    pearlsMaterial.needsUpdate;
+});
+
+textureLoader.load('assets/textures/paper-normal.jpg', texture => {
+   texture.repeat.set(2,2);
+   texture.wrapS = RepeatWrapping;
+   texture.wrapT = RepeatWrapping;
+   // texture.needsUpdate = true;
+   paperMaterial.normalMap = texture;
+   paperMaterial.needsUpdate = true;
+});
+
+textureLoader.load('assets/textures/rope_albedo.png', texture => {
+    texture.wrapS = RepeatWrapping;
+    texture.wrapT = RepeatWrapping;
+    texture.repeat.set(1,10);
+    texture.needsUpdate = true;
+    ropeMaterial.map = texture;
+    ropeMaterial.color = new Color(0xffffff);
+    ropeMaterial.needsUpdate = true;
+});
+
+textureLoader.load('assets/textures/rope_normal.png', texture => {
+    texture.wrapS = RepeatWrapping;
+    texture.wrapT = RepeatWrapping;
+    texture.repeat.set(1,10);
+    texture.needsUpdate = true;
+    ropeMaterial.normalMap = texture;
+    ropeMaterial.needsUpdate = true;
+});
+
+textureLoader.load('assets/textures/wood_albedo.png', texture => {
+    texture.wrapS = RepeatWrapping;
+    texture.wrapT = RepeatWrapping;
+    texture.repeat.set(10,1);
+    texture.rotation = Math.PI/2;
+    texture.needsUpdate = true;
+    woodMaterial.map = texture;
+    woodMaterial.color = new Color(0xffffff);
+    woodMaterial.needsUpdate = true;
+});
+
+textureLoader.load('assets/textures/wood_normal.png', texture => {
+    texture.wrapS = RepeatWrapping;
+    texture.wrapT = RepeatWrapping;
+    texture.repeat.set(10,1);
+    texture.rotation = Math.PI/2;
+    texture.needsUpdate = true;
+    woodMaterial.normalMap = texture;
+    //woodMaterial.color = 0xffffff;
+    woodMaterial.needsUpdate = true;
 });
 
 window.countFPS = (function () {
@@ -71,13 +138,8 @@ function registerOctahedrons(scene)
         createMatrix(new Vector3(1,2.5,0), new Euler(0,0,0), new Vector3(0.3,0.3,0.3)),
     ];
     
-    const materialOpts = {
-        color: COLOR_PINK,
-    };
-    
     const geometry = new OctahedronGeometry(1, 0);
-    const material = new MeshStandardMaterial(materialOpts);
-    const mesh = new InstancedMesh( geometry, material, matrices.length );
+    const mesh = new InstancedMesh( geometry, paperMaterial, matrices.length );
     for ( let i = 0; i < matrices.length; i ++ ) {
         mesh.setMatrixAt( i, matrices[i] );
     }
@@ -88,9 +150,7 @@ function registerOctahedrons(scene)
 
 function createTubeAndWires(scene)
 {
-    const matrices = [
-        // Tube
-        createMatrix(new Vector3(0,4.5,0), new Euler(degToRad(-90),0,degToRad(-90)), new Vector3(0.05,3,0.05)),
+    const RopeMatrices = [
         // main wire
         createMatrix(new Vector3(0,6,0), new Euler(0,0,0), new Vector3(0.01,3,0.01)),
         // Left wire
@@ -100,17 +160,19 @@ function createTubeAndWires(scene)
         // right wire
         createMatrix(new Vector3(1,5-2/2-0.5,0), new Euler(0,0,0), new Vector3(0.01,2,0.01)),
     ];
-    const materialOpts = {
-        color: COLOR_ORANGE,
-    };
     const geometry = new CylinderGeometry(1, 1);
-    const material = new MeshStandardMaterial(materialOpts);
-    const mesh = new InstancedMesh( geometry, material, matrices.length );
-    for ( let i = 0; i < matrices.length; i ++ ) {
-        mesh.setMatrixAt( i, matrices[i] );
+    const mesh = new InstancedMesh( geometry, ropeMaterial, RopeMatrices.length );
+    for ( let i = 0; i < RopeMatrices.length; i ++ ) {
+        mesh.setMatrixAt( i, RopeMatrices[i] );
     }
+    
+    const rodMesh = new Mesh(geometry, woodMaterial);
+    rodMesh.position.set(0,4.5,0);
+    rodMesh.setRotationFromEuler(new Euler(degToRad(-90),0,degToRad(-90)));
+    rodMesh.scale.set(0.05,3,0.05);
+    
     scene.add(mesh);
-    return mesh;
+    scene.add(rodMesh);
 }
 
 function createPearls(scene)
@@ -123,28 +185,15 @@ function createPearls(scene)
         // right wire
         createMatrix(new Vector3(1,4.5 + 0.1,0), new Euler(0,0,0), new Vector3(0.05 ,0.05,0.05)),
     ];
-    const materialOpts = {
-        color: 0xffffff,
-        metalness: 1,
-        roughness: 0.0,
-        envMapIntensity: 1.0,
-        envMap: envMap,
-    };
     const geometry = new SphereGeometry(1, 20);
-    const material = new MeshStandardMaterial(materialOpts);
-    material.envMap = envMap;
-    material.needsUpdate = true;
-    const pearls = new InstancedMesh( geometry, material, matrices.length );
+    const pearls = new InstancedMesh( geometry, pearlsMaterial, matrices.length );
     for ( let i = 0; i < matrices.length; i ++ ) {
         pearls.setMatrixAt( i, matrices[i] );
     }
     scene.add(pearls);
-    return pearls;
 }
 
 const scene = new Scene();
-scene.environment = envMap;
-// scene.background = envMap;
 
 const baseColor = 0x999999;
 const canvas = document.querySelector("canvas");
@@ -191,7 +240,7 @@ scene.fog = new Fog(BG_BLUE, 10, 50);
 // Compose the scene
 registerOctahedrons(scene);
 createTubeAndWires(scene);
-const pearls = createPearls(scene);
+createPearls(scene);
 
 function resize() {
     const width = canvas.clientWidth;
@@ -203,14 +252,9 @@ function resize() {
     }
 }
 
-
-
 var dt=1000/60;
 var timeTarget=0;
 function render(time) {
-    // Fixme: call this only one after load
-    pearls.material.envMap = envMap;
-    pearls.material.needsUpdate = true;
     time *= 0.001;
     resize();
     controls.update();
