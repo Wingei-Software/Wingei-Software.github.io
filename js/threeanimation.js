@@ -30,19 +30,22 @@ const COLOR_PINK = 0xff9fe5;
 const COLOR_ORANGE = 0xef8354;
 const COLOR_GREEN = 0xa4af69;
 
-const paperMaterial = new MeshStandardMaterial({
-    color: COLOR_PINK,
+const redPaperMaterial = new MeshStandardMaterial({
+    color: 0xFF6962,
 });
-
+const bluePaperMaterial = new MeshStandardMaterial({
+    color: 0x5DDCFF,
+});
+const orangePaperMaterial = new MeshStandardMaterial({
+    color: 0xEDCD56,
+});
 const pearlsMaterial = new MeshStandardMaterial({
     color: 0xffffff,
     metalness: 1,
     roughness: 0.05,
     // envMapIntensity: 1.0,
 });
-
 const woodMaterial = new MeshStandardMaterial({color: COLOR_ORANGE});
-
 const ropeMaterial = new MeshStandardMaterial({color: COLOR_ORANGE});
 
 const scene = new Scene();
@@ -64,8 +67,10 @@ textureLoader.load('assets/textures/paper-normal.jpg', texture => {
    texture.wrapS = RepeatWrapping;
    texture.wrapT = RepeatWrapping;
    // texture.needsUpdate = true;
-   paperMaterial.normalMap = texture;
-   paperMaterial.needsUpdate = true;
+   redPaperMaterial.normalMap = texture;
+   bluePaperMaterial.normalMap = texture;
+   orangePaperMaterial.normalMap = texture;
+   redPaperMaterial.needsUpdate = true;
 });
 
 textureLoader.load('assets/textures/rope_albedo.png', texture => {
@@ -169,8 +174,10 @@ exrLoader.load('assets/textures/brown_photostudio_02_1k.exr', texture => {
     woodMaterial.needsUpdate = true;
     ropeMaterial.envMap = txt.texture;
     ropeMaterial.needsUpdate = true;
-    paperMaterial.envMap = txt.texture;
-    paperMaterial.needsUpdate = true;
+    redPaperMaterial.envMap = txt.texture;
+    redPaperMaterial.needsUpdate = true;
+    orangePaperMaterial.envMap = txt.texture;
+    bluePaperMaterial.envMap = txt.texture;
 });
 
 window.countFPS = (function () {
@@ -203,24 +210,25 @@ function createMatrix(position, eulerRotation, scale)
 // Create some floating structures
 function registerOctahedrons(scene)
 {
-    const matrices = [
-        // Left octa
-        createMatrix(new Vector3(-1,3.5,0), new Euler(0,0,0), new Vector3(0.3,0.3,0.3)),
-        // middle octa
-        createMatrix(new Vector3(0,3,0), new Euler(0,0,0), new Vector3(0.3,0.3,0.3)),
-        // right octa
-        createMatrix(new Vector3(1,2.5,0), new Euler(0,0,0), new Vector3(0.3,0.3,0.3)),
-    ];
-    
     const geometry = new OctahedronGeometry(1, 0);
-    const mesh = new InstancedMesh( geometry, paperMaterial, matrices.length );
-    for ( let i = 0; i < matrices.length; i ++ ) {
-        mesh.setMatrixAt( i, matrices[i] );
-    }
-    mesh.matrixAutoUpdate = false;
-    mesh.castShadow = false;
-    scene.add(mesh);
-    return mesh;
+    
+    const left = new Mesh(geometry, orangePaperMaterial);
+    left.position.set(-1,3.5,0);
+    left.scale.set(0.3,0.3,0.3);
+    left.updateMatrix();
+    scene.add(left);
+    
+    const middle = new Mesh(geometry, redPaperMaterial);
+    middle.position.set(0,3,0);
+    middle.scale.set(0.3,0.3,0.3);
+    middle.updateMatrix();
+    scene.add(middle);
+
+    const right = new Mesh(geometry, bluePaperMaterial);
+    right.position.set(1,2.5,0);
+    right.scale.set(0.3,0.3,0.3);
+    right.updateMatrix();
+    scene.add(right);
 }
 
 function createTubeAndWires(scene)
