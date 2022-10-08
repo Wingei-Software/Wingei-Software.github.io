@@ -271,6 +271,7 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0,4,0);
 controls.update();
 controls.autoRotate = true;
+controls.autoRotateSpeed = 0.1;
 controls.enableDamping = true;
 
 // TODO: move camera from y 2 to y 5 and X -2.5 to 2.5
@@ -301,7 +302,7 @@ function resize() {
 }
 
 // target is 30FPS
-const fps_target = 30;
+const fps_target = 24;
 const frame_duration = 1000/fps_target;
 let last_frame_time = 0;
 let next_frame_time = 0;
