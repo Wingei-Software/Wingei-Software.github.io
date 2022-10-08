@@ -1,4 +1,7 @@
-﻿import {
+﻿"use strict"
+
+import {
+    ACESFilmicToneMapping,
     AmbientLight, Color,
     CylinderGeometry,
     DirectionalLight,
@@ -9,7 +12,7 @@
     Matrix4, Mesh,
     MeshStandardMaterial,
     OctahedronGeometry,
-    PerspectiveCamera,
+    PerspectiveCamera, PMREMGenerator,
     Quaternion, RepeatWrapping,
     Scene,
     SphereGeometry,
@@ -19,7 +22,7 @@
 } from "three";
 import {degToRad} from "three/src/math/MathUtils.js";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls.js";
-import {color} from "three/addons/nodes/shadernode/ShaderNodeBaseElements";
+import {EXRLoader} from "three/examples/jsm/loaders/EXRLoader.js";
 
 const BG_BLUE = 0x0367a6;
 const COLOR_PINK = 0xff9fe5;
@@ -33,21 +36,33 @@ const paperMaterial = new MeshStandardMaterial({
 const pearlsMaterial = new MeshStandardMaterial({
     color: 0xffffff,
     metalness: 1,
-    roughness: 0.0,
-    envMapIntensity: 1.0,
+    roughness: 0.05,
+    // envMapIntensity: 1.0,
 });
 
 const woodMaterial = new MeshStandardMaterial({color: COLOR_ORANGE});
 
 const ropeMaterial = new MeshStandardMaterial({color: COLOR_ORANGE});
 
-let textureLoader = new TextureLoader();
+const scene = new Scene();
 
-textureLoader.load('assets/models/envMap.png', (texture) => {
-    texture.mapping =  EquirectangularReflectionMapping;
-    pearlsMaterial.envMap = texture;
-    pearlsMaterial.needsUpdate;
-});
+const canvas = document.querySelector("canvas");
+const renderer = new WebGLRenderer({canvas: canvas, antialias: true});
+renderer.setClearColor(BG_BLUE);
+renderer.setPixelRatio( window.devicePixelRatio );
+renderer.shadowMap.enabled = false;
+renderer.toneMapping = ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1;
+
+let textureLoader = new TextureLoader();
+let exrLoader = new EXRLoader();
+let pmremGenerator = new PMREMGenerator(renderer);
+
+// textureLoader.load('assets/models/envMap.png', (texture) => {
+//     texture.mapping =  EquirectangularReflectionMapping;
+//     pearlsMaterial.envMap = texture;
+//     pearlsMaterial.needsUpdate;
+// });
 
 textureLoader.load('assets/textures/paper-normal.jpg', texture => {
    texture.repeat.set(2,2);
@@ -99,6 +114,20 @@ textureLoader.load('assets/textures/wood_normal.png', texture => {
     woodMaterial.needsUpdate = true;
 });
 
+// from https://polyhaven.com/a/brown_photostudio_05
+exrLoader.load('assets/textures/brown_photostudio_02_1k.exr', texture => {
+    let txt = pmremGenerator.fromEquirectangular( texture );
+    scene.background = txt.texture;
+    pearlsMaterial.envMap = txt.texture;
+    pearlsMaterial.needsUpdate = true;
+    woodMaterial.envMap = txt.texture;
+    woodMaterial.needsUpdate = true;
+    ropeMaterial.envMap = txt.texture;
+    ropeMaterial.needsUpdate = true;
+    paperMaterial.envMap = txt.texture;
+    paperMaterial.needsUpdate = true;
+});
+
 window.countFPS = (function () {
     var lastLoop = (new Date()).getMilliseconds();
     var count = 1;
@@ -143,6 +172,7 @@ function registerOctahedrons(scene)
     for ( let i = 0; i < matrices.length; i ++ ) {
         mesh.setMatrixAt( i, matrices[i] );
     }
+    mesh.matrixAutoUpdate = false;
     mesh.castShadow = false;
     scene.add(mesh);
     return mesh;
@@ -170,7 +200,9 @@ function createTubeAndWires(scene)
     rodMesh.position.set(0,4.5,0);
     rodMesh.setRotationFromEuler(new Euler(degToRad(-90),0,degToRad(-90)));
     rodMesh.scale.set(0.05,3,0.05);
-    
+    mesh.matrixAutoUpdate = false;
+    rodMesh.matrixAutoUpdate = false;
+    rodMesh.updateMatrix();
     scene.add(mesh);
     scene.add(rodMesh);
 }
@@ -190,17 +222,10 @@ function createPearls(scene)
     for ( let i = 0; i < matrices.length; i ++ ) {
         pearls.setMatrixAt( i, matrices[i] );
     }
+    
+    pearls.matrixAutoUpdate = false;
     scene.add(pearls);
 }
-
-const scene = new Scene();
-
-const baseColor = 0x999999;
-const canvas = document.querySelector("canvas");
-const renderer = new WebGLRenderer({canvas: canvas, antialias: true});
-renderer.setClearColor(BG_BLUE);
-renderer.setPixelRatio( window.devicePixelRatio );
-renderer.shadowMap.enabled = false;
 
 const camera = new PerspectiveCamera();
 camera.position.set(1, 5, 4);
@@ -211,18 +236,10 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0,4,0);
 controls.update();
 // controls.target = pearls;
-controls.autoRotate = false;
+controls.autoRotate = true;
 controls.enableDamping = true;
 
 // TODO: move camera from y 2 to y 5 and X -2.5 to 2.5
-
-// Ambiant light
-const light = new AmbientLight( baseColor, 0.4 ); // soft white light
-scene.add(light);
-
-const sunLight = new DirectionalLight(0xffffff, 1);
-sunLight.position.set(-100,200.5,60);
-scene.add(sunLight);
 
 let mouseX = 10, mouseY = 10;
 let windowHalfX = window.innerWidth / 2;
@@ -254,15 +271,16 @@ function resize() {
 
 var dt=1000/60;
 var timeTarget=0;
+
 function render(time) {
-    time *= 0.001;
+    // time *= 0.001;
     resize();
     controls.update();
-    renderer.clear();
+    // renderer.clear();
     renderer.render(scene, camera);
     requestAnimationFrame(render);
 }
 
-setInterval(() => {console.log(countFPS())}, 1000);
+// setInterval(() => {console.log(countFPS())}, 1000);
 
 render();
