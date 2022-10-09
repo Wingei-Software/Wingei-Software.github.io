@@ -11780,3 +11780,25 @@ section#contact form#contactForm :-ms-input-placeholder {
   z-index: -9999;
   background-color: var(--bs-blue);
 }
+
+.masthead-heading {
+  display: grid;
+  column-count: 2;
+  grid-template-columns: 1fr 1fr;
+  justify-content: start;
+}
+
+.heading-option {
+  text-align: left;
+  color: var(--bs-pink);
+  font-style: italic;
+  margin-left: 15px;
+}
+
+.display-none {
+  display: none;
+}
+
+.freelance-title {
+  text-align: right;
+}
