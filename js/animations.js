@@ -37,6 +37,17 @@ new ScrollMagic.Scene(aboutSceneParams)
     // .addIndicators() // add indicators (requires plugin)
     .addTo(controller);
 
+const contactSceneParams = {
+    triggerElement: "#contact",
+    triggerHook: 0.9, // show, when scrolled 10% into view
+    // duration: "80%", // hide 10% before exiting view (80% + 10% from bottom)
+    offset: 50 // move trigger to center of element
+};
+new ScrollMagic.Scene(contactSceneParams)
+    .setClassToggle("#contact .contact-method", "animate__flipInX")
+    // .addIndicators() // add indicators (requires plugin)
+    .addTo(controller);
+
 // Scroll heading options
 const items = document.getElementsByClassName('heading-option');
 let index = 0;
