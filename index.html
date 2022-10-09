@@ -5,6 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="Wingei Software - Damien PIQUET Freelance web, jeu vidéo et devops à Caen" />
         <meta name="author" content="" />
+        <meta property="og:title" content="Wingei Software - Freelance développeur à Caen">
+        <meta property="og:site_name" content="Wingei Software">
+        <meta property="og:url" content="https://wingei-software.com">
+        <meta property="og:description" content="Creative developer freelance à Caen. Dévelopement web, jeu vidéo, VR et devops.">
+        <meta property="og:type" content="">
+        <meta property="og:image" content="">
         <title>Wingei Software - Web & jeu vidéo</title>
         
         <!-- Favicon-->
@@ -48,7 +54,7 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
                         <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#portfolio">Portfolio</a></li>
+<!--                        <li class="nav-item"><a class="nav-link" href="#portfolio">Portfolio</a></li>-->
                         <li class="nav-item"><a class="nav-link" href="#about">A propos</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                     </ul>
@@ -84,7 +90,7 @@
                         <span class="heading-option animate__animated display-none">à Caen</span>
                     </div>
                 </div>
-                <a class="btn btn-primary btn-xl text-uppercase animate__animated animate__slideInDown" href="#services">
+                <a class="btn btn-primary btn-xl text-uppercase animate__animated animate__slideInDown" href="#services" id="go-down">
                     <i class="fa-solid fa-caret-down"></i>
                 </a>
             </div>
@@ -134,46 +140,46 @@
             </div>
         </section>
         <!-- Portfolio Grid-->
-        <section class="page-section bg-light" id="portfolio">
-            <div class="container">
-                <div class="text-center">
-                    <h2 class="section-heading text-uppercase">Portfolio</h2>
-                    <h3 class="section-subheading text-muted">Projets et prototypes réalisés.</h3>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 col-sm-6 mb-4">
-                        <!-- Portfolio item 1-->
-                        <div class="portfolio-item">
-                            <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal1">
-                                <div class="portfolio-hover">
-                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-                                </div>
-                                <img class="img-fluid" src="assets/img/portfolio/permutations-cover.jpg" alt="..." />
-                            </a>
-                            <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Permutations</div>
-                                <div class="portfolio-caption-subheading text-muted">Prototype Godot Engine - desktop</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-6 mb-4">
-                        <!-- Portfolio item 2-->
-                        <div class="portfolio-item">
-                            <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal2">
-                                <div class="portfolio-hover">
-                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-                                </div>
-                                <img class="img-fluid" src="assets/img/portfolio/permutations-cover.jpg" alt="..." />
-                            </a>
-                            <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Renaturation</div>
-                                <div class="portfolio-caption-subheading text-muted">Prototype Unity 3D - VR</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+<!--        <section class="page-section bg-light" id="portfolio">-->
+<!--            <div class="container">-->
+<!--                <div class="text-center">-->
+<!--                    <h2 class="section-heading text-uppercase">Portfolio</h2>-->
+<!--                    <h3 class="section-subheading text-muted">Projets et prototypes réalisés.</h3>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--                    <div class="col-lg-4 col-sm-6 mb-4">-->
+<!--                        &lt;!&ndash; Portfolio item 1&ndash;&gt;-->
+<!--                        <div class="portfolio-item">-->
+<!--                            <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal1">-->
+<!--                                <div class="portfolio-hover">-->
+<!--                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>-->
+<!--                                </div>-->
+<!--                                <img class="img-fluid" src="assets/img/portfolio/permutations-cover.jpg" alt="..." />-->
+<!--                            </a>-->
+<!--                            <div class="portfolio-caption">-->
+<!--                                <div class="portfolio-caption-heading">Permutations</div>-->
+<!--                                <div class="portfolio-caption-subheading text-muted">Prototype Godot Engine - desktop</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col-lg-4 col-sm-6 mb-4">-->
+<!--                        &lt;!&ndash; Portfolio item 2&ndash;&gt;-->
+<!--                        <div class="portfolio-item">-->
+<!--                            <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal2">-->
+<!--                                <div class="portfolio-hover">-->
+<!--                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>-->
+<!--                                </div>-->
+<!--                                <img class="img-fluid" src="assets/img/portfolio/TBA.png" alt="..." />-->
+<!--                            </a>-->
+<!--                            <div class="portfolio-caption">-->
+<!--                                <div class="portfolio-caption-heading">Renaturation</div>-->
+<!--                                <div class="portfolio-caption-subheading text-muted">Prototype Unity 3D - VR</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </section>-->
         <!-- About -->
         <section class="page-section bg-light" id="about">
             <div class="container">
@@ -188,9 +194,10 @@
                                 Fort de mon expérience en tant que développeur et devops au service d'entreprises ambitieuses, je peux
                                 vous accompagner sur vos projets web, 3d, VR, et d'autres !
                                 
-                                Pluridisciplaire, mon domaine de compétence s'étend de l'infrastructure au développement. Contactez moi pour me parler
-                                de vos projets !
+                                Pluridisciplaire, mon domaine de compétence s'étend de l'infrastructure au développement.
                             </p>
+                            <p><a href="#contact">Contactez moi pour me parler
+                                de vos projets !</a></p>
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -296,7 +303,7 @@
                                     <!-- Project details-->
                                     <h2 class="text-uppercase">Renaturation</h2>
                                     <p class="item-intro text-muted">City builder VR - Meta Quest 2 - Unity 3D.</p>
-                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/permutations-cover.jpg" alt="..." />
+                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/TBA.png" alt="..." />
                                     <p>
                                         Renaturation est un city builder en VR sur le thème de la vie sous marine. Développez la vie
                                         et veillez à subvenir aux besoins de tous les animaux peuplant votre océan.
