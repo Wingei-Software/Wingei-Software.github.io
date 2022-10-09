@@ -11781,11 +11781,23 @@ section#contact form#contactForm :-ms-input-placeholder {
   background-color: var(--bs-blue);
 }
 
+/*.masthead-heading {*/
+/*  display: grid;*/
+/*  column-count: 2;*/
+/*  grid-template-columns: 1fr 1fr;*/
+/*  justify-content: start;*/
+/*}*/
+
+/*.animated_text {*/
 .masthead-heading {
-  display: grid;
-  column-count: 2;
-  grid-template-columns: 1fr 1fr;
-  justify-content: start;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: space-evenly;
+  flex-grow: 0;     /* do not grow   - initial value: 0 */
+  flex-shrink: 0;  /* do not shrink - initial value: 1 */
 }
 
 .heading-option {
@@ -11793,6 +11805,7 @@ section#contact form#contactForm :-ms-input-placeholder {
   color: var(--bs-pink);
   font-style: italic;
   margin-left: 15px;
+  flex-basis: 25rem;
 }
 
 .display-none {
