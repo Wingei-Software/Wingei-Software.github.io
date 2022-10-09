@@ -55,4 +55,4 @@ setInterval(() => {
     
     index++;
     if (index >= items.length) { index = 0; }
-}, 2000);
+}, 2500);
