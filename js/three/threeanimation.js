@@ -301,7 +301,6 @@ function resize() {
     }
 }
 
-// target is 30FPS
 const fps_target = 24;
 const frame_duration = 1000/fps_target;
 let last_frame_time = 0;
