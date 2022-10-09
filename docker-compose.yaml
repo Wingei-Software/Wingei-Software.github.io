@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  app:
+    image: node:latest
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+    # Use sleep to avoid docker closing stdin
+    #command: 'sleep 9999999999 |yarn run watch'
+    command: tail -F /var/log/syslog 

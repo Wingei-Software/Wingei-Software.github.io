@@ -1,13 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
+        <meta name="description" content="Wingei Software - Damien PIQUET Freelance web, jeu vidéo et devops à Caen" />
         <meta name="author" content="" />
+        <meta property="og:title" content="Wingei Software - Freelance développeur à Caen">
+        <meta property="og:site_name" content="Wingei Software">
+        <meta property="og:url" content="https://wingei-software.com">
+        <meta property="og:description" content="Creative developer freelance à Caen. Dévelopement web, jeu vidéo, VR et devops.">
+        <meta property="og:type" content="">
+        <meta property="og:image" content="">
         <title>Wingei Software - Web & jeu vidéo</title>
+        
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
         
@@ -18,6 +26,21 @@
 
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+
+        <link
+                rel="stylesheet"
+                href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+        />
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-RRK8P1GM7V"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-RRK8P1GM7V');
+        </script>
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -31,7 +54,7 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
                         <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#portfolio">Portfolio</a></li>
+<!--                        <li class="nav-item"><a class="nav-link" href="#portfolio">Portfolio</a></li>-->
                         <li class="nav-item"><a class="nav-link" href="#about">A propos</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                     </ul>
@@ -43,10 +66,33 @@
         <header class="masthead">
             <div class="container">
                 <div class="masthead-subheading">
-                    <img src="assets/img/logos/TextOnly.svg">
+                    <img src="assets/img/logos/TextOnlyWhite.svg" alt="Wingei Software">
                 </div>
-                <div class="masthead-heading text-uppercase">Web, 3D, DevOps</div>
-                <a class="btn btn-primary btn-xl text-uppercase" href="#services"><i class="fa-solid fa-caret-down"></i></a>
+                <div class="animated_text">
+                    <div class="masthead-heading text-uppercase">
+                        <span class="freelance-title">Freelance </span>
+                        <span class="heading-option animate__animated">Web</span>
+                        <span class="heading-option animate__animated display-none">3D</span>
+                        <span class="heading-option animate__animated display-none">DevOps</span>
+                        <span class="heading-option animate__animated display-none">Backend</span>
+                        <span class="heading-option animate__animated display-none">Unity</span>
+                        <span class="heading-option animate__animated display-none">Godot</span>
+                        <span class="heading-option animate__animated display-none">Angular</span>
+                        <span class="heading-option animate__animated display-none">Symfony</span>
+                        <span class="heading-option animate__animated display-none">Shader</span>
+                        <span class="heading-option animate__animated display-none">Docker</span>
+                        <span class="heading-option animate__animated display-none">Kubernetes</span>
+                        <span class="heading-option animate__animated display-none">PHP</span>
+                        <span class="heading-option animate__animated display-none">Typescript</span>
+                        <span class="heading-option animate__animated display-none">Three JS</span>
+                        <span class="heading-option animate__animated display-none">C#</span>
+                        <span class="heading-option animate__animated display-none">VR</span>
+                        <span class="heading-option animate__animated display-none">à Caen</span>
+                    </div>
+                </div>
+                <a class="btn btn-primary btn-xl text-uppercase animate__animated animate__slideInDown" href="#services" id="go-down">
+                    <i class="fa-solid fa-caret-down"></i>
+                </a>
             </div>
         </header>
         <!-- Services-->
@@ -57,7 +103,7 @@
                     <h3 class="section-subheading text-muted">Développements sur mesure.</h3>
                 </div>
                 <div class="row text-center">
-                    <div class="col-md-4">
+                    <div class="col-md-4 service-block animate__animated left-block">
                         <span class="fa-stack fa-4x">
                             <i class="fas fa-circle fa-stack-2x text-primary"></i>
                             <i class="fas fa-laptop fa-stack-1x fa-inverse"></i>
@@ -69,7 +115,7 @@
                             SSO, ...
                         </p>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 service-block animate__animated middle-block animate__slower">
                         <span class="fa-stack fa-4x">
                             <i class="fas fa-circle fa-stack-2x text-primary"></i>
                             <i class="fas fa-gamepad fa-stack-1x fa-inverse"></i>
@@ -77,10 +123,10 @@
                         <h4 class="my-3">3D / Jeu vidéo</h4>
                         <p class="text-muted">
                             Développement de vos mécaniques de jeu et tooling, dans les moteurs Unity & Godot Engine.
-                            Intégration 3D sur le web. Prototypage rapide, optimisation de shaders et analyse de performance, ...
+                            Intégration 3D sur le web. Prototypage, optimisation et analyse de performance, ...
                         </p>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 service-block animate__animated right-block">
                         <span class="fa-stack fa-4x">
                             <i class="fas fa-circle fa-stack-2x text-primary"></i>
                             <i class="fas fa-cubes fa-stack-1x fa-inverse"></i>
@@ -94,46 +140,46 @@
             </div>
         </section>
         <!-- Portfolio Grid-->
-        <section class="page-section bg-light" id="portfolio">
-            <div class="container">
-                <div class="text-center">
-                    <h2 class="section-heading text-uppercase">Portfolio</h2>
-                    <h3 class="section-subheading text-muted">Projets et prototypes réalisés.</h3>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 col-sm-6 mb-4">
-                        <!-- Portfolio item 1-->
-                        <div class="portfolio-item">
-                            <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal1">
-                                <div class="portfolio-hover">
-                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-                                </div>
-                                <img class="img-fluid" src="assets/img/portfolio/permutations-cover.jpg" alt="..." />
-                            </a>
-                            <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Permutations</div>
-                                <div class="portfolio-caption-subheading text-muted">Prototype Godot Engine - desktop</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-6 mb-4">
-                        <!-- Portfolio item 2-->
-                        <div class="portfolio-item">
-                            <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal2">
-                                <div class="portfolio-hover">
-                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-                                </div>
-                                <img class="img-fluid" src="assets/img/portfolio/permutations-cover.jpg" alt="..." />
-                            </a>
-                            <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Renaturation</div>
-                                <div class="portfolio-caption-subheading text-muted">Prototype Unity 3D - VR</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+<!--        <section class="page-section bg-light" id="portfolio">-->
+<!--            <div class="container">-->
+<!--                <div class="text-center">-->
+<!--                    <h2 class="section-heading text-uppercase">Portfolio</h2>-->
+<!--                    <h3 class="section-subheading text-muted">Projets et prototypes réalisés.</h3>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--                    <div class="col-lg-4 col-sm-6 mb-4">-->
+<!--                        &lt;!&ndash; Portfolio item 1&ndash;&gt;-->
+<!--                        <div class="portfolio-item">-->
+<!--                            <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal1">-->
+<!--                                <div class="portfolio-hover">-->
+<!--                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>-->
+<!--                                </div>-->
+<!--                                <img class="img-fluid" src="assets/img/portfolio/permutations-cover.jpg" alt="..." />-->
+<!--                            </a>-->
+<!--                            <div class="portfolio-caption">-->
+<!--                                <div class="portfolio-caption-heading">Permutations</div>-->
+<!--                                <div class="portfolio-caption-subheading text-muted">Prototype Godot Engine - desktop</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col-lg-4 col-sm-6 mb-4">-->
+<!--                        &lt;!&ndash; Portfolio item 2&ndash;&gt;-->
+<!--                        <div class="portfolio-item">-->
+<!--                            <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal2">-->
+<!--                                <div class="portfolio-hover">-->
+<!--                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>-->
+<!--                                </div>-->
+<!--                                <img class="img-fluid" src="assets/img/portfolio/TBA.png" alt="..." />-->
+<!--                            </a>-->
+<!--                            <div class="portfolio-caption">-->
+<!--                                <div class="portfolio-caption-heading">Renaturation</div>-->
+<!--                                <div class="portfolio-caption-subheading text-muted">Prototype Unity 3D - VR</div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </section>-->
         <!-- About -->
         <section class="page-section bg-light" id="about">
             <div class="container">
@@ -148,16 +194,17 @@
                                 Fort de mon expérience en tant que développeur et devops au service d'entreprises ambitieuses, je peux
                                 vous accompagner sur vos projets web, 3d, VR, et d'autres !
                                 
-                                Ma passion pour le jeu vidéo et la VR m'a ammené à entreprendre dans ce secteur
-                                pour vous apporter un service de qualité.
+                                Pluridisciplaire, mon domaine de compétence s'étend de l'infrastructure au développement.
                             </p>
+                            <p><a href="#contact">Contactez moi pour me parler
+                                de vos projets !</a></p>
                         </div>
                     </div>
                     <div class="col-lg-4">
-                        <div class="team-member">
+                        <div class="team-member member-short animate__animated">
                             <img class="mx-auto rounded-circle" src="assets/img/team/1.jpg" alt="Damien PIQUET" />
                             <h4>Damien PIQUET</h4>
-                            <p class="text-muted">One man band</p>
+                            <p class="text-muted">Creative developer</p>
                             <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Damien PIQUET Twitter Profile"><i class="fab fa-twitter"></i></a>
                             <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Damien PIQUET Facebook Profile"><i class="fab fa-facebook-f"></i></a>
                             <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Damien PIQUET LinkedIn Profile"><i class="fab fa-linkedin-in"></i></a>
@@ -166,32 +213,36 @@
                 </div>
             </div>
         </section>
-        <!-- Clients-->
-        <div class="py-5">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-3 col-sm-6 my-3">
-                        <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/Unity_Technologies_logo.svg" alt="..." aria-label="Microsoft Logo" /></a>
-                    </div>
-                    <div class="col-md-3 col-sm-6 my-3">
-                        <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/godot_logo_large_monochrome_light.svg" alt="..." aria-label="Google Logo" /></a>
-                    </div>
-                    <div class="col-md-3 col-sm-6 my-3">
-                        <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/Meta_Quest_logo.svg" alt="..." aria-label="Meta quest Logo" /></a>
-                    </div>
-                    <div class="col-md-3 col-sm-6 my-3">
-                        <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/Meta_Quest_logo.svg" alt="..." aria-label="IBM Logo" /></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- Technologies-->
+<!--        <div class="py-5">-->
+<!--            <div class="container">-->
+<!--                <div class="row align-items-center">-->
+<!--                    <div class="col-md-3 col-sm-6 my-3">-->
+<!--                        <img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/Unity_Technologies_logo.svg" alt="..." aria-label="Microsoft Logo" />-->
+<!--                    </div>-->
+<!--                    <div class="col-md-3 col-sm-6 my-3">-->
+<!--                        <img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/godot_logo_large_monochrome_light.svg" alt="..." aria-label="Google Logo" />-->
+<!--                    </div>-->
+<!--                    <div class="col-md-3 col-sm-6 my-3">-->
+<!--                        <img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/Meta_Quest_logo.svg" alt="..." aria-label="Meta quest Logo" />-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
         <!-- Contact-->
         <section class="page-section" id="contact">
             <div class="container">
                 <div class="text-center">
                     <h2 class="section-heading text-uppercase">Me contacter</h2>
-                    <h3 class="section-subheading text-muted">wingeisoftware@gmail.com</h3>
-                    <h3 class="section-subheading text-muted">06 43 26 80 90</h3>
+                    <div class="animate__animated contact-method mail">
+                        <i class="fa-solid fa-envelope"></i> <a href="mailto:damien@wingei-software.com">wingeisoftware@gmail.com</a>
+                    </div>
+                    <div class="animate__animated contact-method phone">
+                        <i class="fa-solid fa-phone"></i> <a href="tel:+33643268090">06 43 26 80 90</a>
+                    </div>
+                    <div class="animate__animated contact-method discord">
+                        <i class="fa-brands fa-discord"></i> <a href="https://discord.com/users/wingei_34#9418/">Discord</a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -200,14 +251,14 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-4 text-lg-start">Copyright &copy; Wingei Software 2022</div>
-                    <div class="col-lg-4 my-3 my-lg-0">
-                        <a class="btn btn-dark btn-social mx-2" href="https://twitter.com/SoftwareWingei" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                        <!-- <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a> -->
-                        <!-- <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a> -->
-                    </div>
-                    <div class="col-lg-4 text-lg-end">
-                        <a class="link-dark text-decoration-none" href="#!">Mentions légales</a>
-                    </div>
+<!--                    <div class="col-lg-4 my-3 my-lg-0">-->
+<!--                        <a class="btn btn-dark btn-social mx-2" href="https://twitter.com/SoftwareWingei" aria-label="Twitter"><i class="fab fa-twitter"></i></a>-->
+<!--                        &lt;!&ndash; <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a> &ndash;&gt;-->
+<!--                        &lt;!&ndash; <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a> &ndash;&gt;-->
+<!--                    </div>-->
+<!--                    <div class="col-lg-4 text-lg-end">-->
+<!--                        <a class="link-dark text-decoration-none" href="#!">Mentions légales</a>-->
+<!--                    </div>-->
                 </div>
             </div>
         </footer>
@@ -231,7 +282,7 @@
                                     </p>
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
                                         <i class="fas fa-xmark me-1"></i>
-                                        Close Project
+                                        Fermer
                                     </button>
                                 </div>
                             </div>
@@ -252,11 +303,14 @@
                                     <!-- Project details-->
                                     <h2 class="text-uppercase">Renaturation</h2>
                                     <p class="item-intro text-muted">City builder VR - Meta Quest 2 - Unity 3D.</p>
-                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/permutations-cover.jpg" alt="..." />
-                                    <p>TODO</p>
+                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/TBA.png" alt="..." />
+                                    <p>
+                                        Renaturation est un city builder en VR sur le thème de la vie sous marine. Développez la vie
+                                        et veillez à subvenir aux besoins de tous les animaux peuplant votre océan.
+                                    </p>
                                     <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
                                         <i class="fas fa-xmark me-1"></i>
-                                        Close Project
+                                        Fermer
                                     </button>
                                 </div>
                             </div>
@@ -268,36 +322,13 @@
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
-        <script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
-        <script type="importmap">
-          {
-            "imports": {
-              "three": "https://unpkg.com/three@0.144/build/three.module.js"
-            }
-          }
-        </script>
-        
         <script src="js/scripts.js"></script>
-        <script type="module" src="js/threeanimation.js"></script>
+        <!-- three animation -->
+        <script type="module" src="js/three/threeanimation.min.js"></script>
 
-        <script type="x-shader/x-vertex" id="vertexshader">
-			varying vec2 vUv;
-
-			void main() {
-				vUv = uv;
-				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-			}
-		</script>
-
-        <script type="x-shader/x-fragment" id="fragmentshader">
-			uniform sampler2D baseTexture;
-			uniform sampler2D bloomTexture;
-
-			varying vec2 vUv;
-
-			void main() {
-				gl_FragColor = ( texture2D( baseTexture, vUv ) + vec4( 1.0 ) * texture2D( bloomTexture, vUv ) );
-			}
-		</script>
+        <!-- scroll magic -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/ScrollMagic.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.7/plugins/debug.addIndicators.min.js"></script>
+        <script src="js/animations.js"></script>
     </body>
 </html>
