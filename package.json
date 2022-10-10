@@ -1,11 +1,15 @@
 {
   "dependencies": {
+    "animejs": "^3.2.1",
     "esbuild": "^0.15.9",
+    "letterizejs": "^2.0.1",
+    "scrollmagic": "^2.0.8",
     "three": "^0.144.0"
   },
   "scripts": {
     "build": "esbuild js/three/threeanimation.js --bundle --minify --outfile=js/three/threeanimation.min.js",
-    "watch-minify": "esbuild --bundle --minify js/three/threeanimation.js --outfile=js/three/threeanimation.min.js --watch",
-    "watch": "esbuild --bundle js/three/threeanimation.js --outfile=js/three/threeanimation.min.js --watch"
+    "watch": "esbuild --bundle js/three/threeanimation.js --outfile=js/three/threeanimation.min.js --watch",
+    "build-main": "esbuild js/main.js --bundle --minify --outfile=js/main.min.js",
+    "watch-main": "esbuild --bundle js/main.js --outfile=js/main.min.js --watch"
   }
 }

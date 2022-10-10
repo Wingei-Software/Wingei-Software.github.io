@@ -11863,3 +11863,7 @@ section#contact form#contactForm :-ms-input-placeholder {
   top: 85vh;
   left: calc(50vw - 3rem);
 }
+
+.funny-letters span {
+  display: inline-block;
+}

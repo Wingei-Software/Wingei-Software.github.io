@@ -12,6 +12,11 @@
   resolved "https://registry.yarnpkg.com/@esbuild/linux-loong64/-/linux-loong64-0.15.9.tgz#b658a97babf1f40783354af7039b84c3fdfc3fc3"
   integrity sha512-O+NfmkfRrb3uSsTa4jE3WApidSe3N5++fyOVGP1SmMZi4A3BZELkhUUvj5hwmMuNdlpzAZ8iAPz2vmcR7DCFQA==
 
+animejs@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/animejs/-/animejs-3.2.1.tgz#de9fe2e792f44a777a7fdf6ae160e26604b0cdda"
+  integrity sha512-sWno3ugFryK5nhiDm/2BKeFCpZv7vzerWUcUPyAZLDhMek3+S/p418ldZJbJXo5ZUOpfm2kP2XRO4NJcULMy9A==
+
 esbuild-android-64@0.15.9:
   version "0.15.9"
   resolved "https://registry.yarnpkg.com/esbuild-android-64/-/esbuild-android-64-0.15.9.tgz#4a7eb320ca8d3a305f14792061fd9614ccebb7c0"
@@ -139,6 +144,16 @@ esbuild@^0.15.9:
     esbuild-windows-32 "0.15.9"
     esbuild-windows-64 "0.15.9"
     esbuild-windows-arm64 "0.15.9"
+
+letterizejs@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/letterizejs/-/letterizejs-2.0.1.tgz#ff691da3cca70b669c97347fd2ced9648ddc2fa2"
+  integrity sha512-ofKV11GGUdEZELXSwR97AteC3Uv9cmLt7IB+L5BLyMp8khDBCwGs+B+c6FHoL/n7vAPC2aeva5WU3gdOuFIhmA==
+
+scrollmagic@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/scrollmagic/-/scrollmagic-2.0.8.tgz#e0d7aff804c393c022fdc0c566f1edce3b4e9ed7"
+  integrity sha512-UYXEGBPVLziovXl3FjHGkY9c4UXKUKopIdXwWR2JapWxCo0U345wYegi7rcsv5vHf/ktc1bSNWy4QRFiV+Yccw==
 
 three@^0.144.0:
   version "0.144.0"
