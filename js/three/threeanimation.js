@@ -211,6 +211,8 @@ function registerOctahedrons(scene)
     right.scale.set(0.3,0.3,0.3);
     right.updateMatrix();
     scene.add(right);
+
+    return [left, middle, right];
 }
 
 function createTubeAndWires(scene)
@@ -244,7 +246,7 @@ function createTubeAndWires(scene)
 
 function createPearls(scene)
 {
-    const matrices = [
+    const pearlsMatrices = [
         // Left wire
         createMatrix(new Vector3(-1,4.5 + 0.1,0), new Euler(0,0,0), new Vector3(0.05 ,0.05,0.05)),
         // middle wire
@@ -253,9 +255,9 @@ function createPearls(scene)
         createMatrix(new Vector3(1,4.5 + 0.1,0), new Euler(0,0,0), new Vector3(0.05 ,0.05,0.05)),
     ];
     const geometry = new SphereGeometry(1, 20);
-    const pearls = new InstancedMesh( geometry, pearlsMaterial, matrices.length );
-    for ( let i = 0; i < matrices.length; i ++ ) {
-        pearls.setMatrixAt( i, matrices[i] );
+    const pearls = new InstancedMesh( geometry, pearlsMaterial, pearlsMatrices.length );
+    for ( let i = 0; i < pearlsMatrices.length; i ++ ) {
+        pearls.setMatrixAt( i, pearlsMatrices[i] );
     }
     
     pearls.matrixAutoUpdate = false;
@@ -287,7 +289,7 @@ function onDocumentMouseMove( event ) {
 }
 
 // Compose the scene
-registerOctahedrons(scene);
+const octas = registerOctahedrons(scene);
 createTubeAndWires(scene);
 createPearls(scene);
 
@@ -306,8 +308,23 @@ const frame_duration = 1000/fps_target;
 let last_frame_time = 0;
 let next_frame_time = 0;
 
-function render() {
-    if (performance.now() > next_frame_time) {
+const TAU = Math.PI*2;
+
+function animate(time) {
+    octas[0].rotation.set(0, originalOctasYRotations[0] + TAU * 0.004 * Math.sin(time*0.001 + 20), 0);
+    octas[1].rotation.set(0, originalOctasYRotations[1] + TAU * 0.007 * Math.sin(time*0.001 + 40), 0);
+    octas[2].rotation.set(0, originalOctasYRotations[2] + TAU * 0.006 * Math.sin(time*0.001 + 66), 0);
+}
+
+const originalOctasYRotations = [
+    octas[0].rotation.y,
+    octas[1].rotation.y,
+    octas[2].rotation.y
+]
+
+function render(time) {
+    animate(time);
+    if (time > next_frame_time) {
         resize();
         controls.update();
         renderer.render(scene, camera);
