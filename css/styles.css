@@ -11333,7 +11333,7 @@ p {
 #mainNav {
   padding-top: 1rem;
   padding-bottom: 1rem;
-  background-color: var(--bs-blue);
+  /*background-color: var(--bs-blue);*/
 }
 #mainNav .navbar-toggler {
   padding: 0.75rem;
@@ -11400,14 +11400,15 @@ p {
   padding-top: 10.5rem;
   padding-bottom: 6rem;
   text-align: center;
-  color: var(--bs-white);
-  /*background-color: var(--bs-blue); */
+  /*color: var(--bs-black);*/
+  background-color: var(--bs-gray-300); 
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: center center;
   background-size: cover;
   height: 100vh;
 }
+
 .masthead .masthead-subheading {
   font-size: 1.5rem;
   font-style: italic;
@@ -11415,10 +11416,17 @@ p {
   margin-bottom: 25px;
 }
 .masthead .masthead-heading {
-  font-size: 3.25rem;
-  font-weight: 700;
-  line-height: 3.25rem;
-  margin-bottom: 2rem;
+  /*font-size: 3.25rem;*/
+  /*font-weight: 700;*/
+  /*line-height: 3.25rem;*/
+  /*margin-bottom: 2rem;*/
+  /*margin-top: 14rem;*/
+  position: absolute;
+  top: 30%;
+}
+
+.masthead-heading img {
+  width: 85%;
 }
 
 .masthead-subheading img {
